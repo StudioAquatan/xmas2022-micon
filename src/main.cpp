@@ -27,14 +27,25 @@ char aws_iot_subscribe_topic[128];
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(256);
 
+volatile uint8_t gCurrentPatternNumber = 0;
+
 void publishMessage() {
-    StaticJsonDocument<200> doc;
+    /* Example of publishing a message
+        {
+            "state": {
+                "reported": {
+                    "pattern": 1
+                }
+            }
+        }
+    */
+    const int capacity = 3 * JSON_OBJECT_SIZE(1);
+    StaticJsonDocument<capacity> doc;
+
     JsonObject root = doc.to<JsonObject>();
     JsonObject state = root.createNestedObject("state");
-    // JsonObject desired = state.createNestedObject("desired");
-    // desired["pattern"] = 100;
     JsonObject reported = state.createNestedObject("reported");
-    reported["pattern"] = 200;
+    reported["pattern"] = gCurrentPatternNumber;
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
@@ -42,11 +53,56 @@ void publishMessage() {
 }
 
 void messageHandler(String &topic, String &payload) {
-    Serial.println("incoming: " + topic + " - " + payload);
+    /* Example of subscribing a message
+    {
+        "version":1102,
+        "timestamp":1670132215,
+        "state":{
+            "pattern": 100
+        },
+        "metadata": {
+            "pattern":{
+                "timestamp":1670082769
+            }
+        }
+    }
+    */
+    const int capacity = JSON_OBJECT_SIZE(4) + 7 * JSON_OBJECT_SIZE(1);
+    StaticJsonDocument<capacity> doc;
 
-    //  StaticJsonDocument<200> doc;
-    //  deserializeJson(doc, payload);
-    //  const char* message = doc["message"];
+    Serial.println("incoming: " + topic + " - " + payload);
+    DeserializationError err = deserializeJson(doc, payload);
+
+    switch (err.code()) {
+        case DeserializationError::EmptyInput:
+            Serial.println("DeserializationError::EmptyInput. The input was empty or contained only spaces.");
+            break;
+        case DeserializationError::IncompleteInput:
+            Serial.println("DeserializationError::IncompleteInput. The input was valid but ended prematurely.");
+            break;
+        case DeserializationError::InvalidInput:
+            Serial.println("DeserializationError::InvalidInput. the input was not a valid JSON document.");
+            break;
+        case DeserializationError::NoMemory:
+            Serial.println("DeserializationError::NoMemory. The JsonDocument was too small.");
+            break;
+        case DeserializationError::TooDeep:
+            Serial.println(
+                "DeserializationError::TooDeep. The input was valid, but it contained too many "
+                "nesting levels; we’ll talk about that later in the book.");
+            break;
+        default:
+            break;
+    }
+
+    auto pattern = doc["state"]["pattern"] | -1;
+    if (pattern == -1) {
+        Serial.println("Payload did not contain a pattern. Skipping.");
+    } else {
+        gCurrentPatternNumber = uint8_t(pattern);
+        Serial.println("Changed pattern to: " + String(gCurrentPatternNumber));
+        publishMessage();
+    }
 }
 
 void connectAWS() {
@@ -98,10 +154,10 @@ void setup() {
     Serial.printf("subTopicShadow=%s\n", aws_iot_subscribe_topic);
 
     connectAWS();
+    publishMessage();
 }
 
 void loop() {
-    publishMessage();
     client.loop();
     delay(1000);
 }
