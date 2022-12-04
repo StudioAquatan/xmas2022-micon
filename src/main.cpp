@@ -25,7 +25,7 @@ char AWSIoTPublishTopic[128];
 char AWSIoTSubscribeTopic[128];
 
 WiFiClientSecure net = WiFiClientSecure();
-MQTTClient client = MQTTClient(256);
+MQTTClient mqttClient = MQTTClient(256);
 
 volatile uint8_t gCurrentPatternNumber = 0;
 
@@ -49,7 +49,7 @@ void publishCurrentPatternNumber() {
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
-    client.publish(AWSIoTPublishTopic, jsonBuffer);
+    mqttClient.publish(AWSIoTPublishTopic, jsonBuffer);
 }
 
 void updateStateHandler(String &topic, String &payload) {
@@ -122,25 +122,25 @@ void connectAWS() {
     net.setPrivateKey(AWS_CERT_PRIVATE);
 
     // Connect to the MQTT broker on the AWS endpoint we defined earlier
-    client.begin(AWS_IOT_ENDPOINT, 8883, net);
+    mqttClient.begin(AWS_IOT_ENDPOINT, 8883, net);
 
     // Create a message handler
-    client.onMessage(updateStateHandler);
+    mqttClient.onMessage(updateStateHandler);
 
     Serial.print("Connecting to AWS IOT");
 
-    while (!client.connect(THINGNAME)) {
+    while (!mqttClient.connect(THINGNAME)) {
         Serial.print(".");
         delay(100);
     }
 
-    if (!client.connected()) {
+    if (!mqttClient.connected()) {
         Serial.println("AWS IoT Timeout!");
         return;
     }
 
     // Subscribe to a topic
-    client.subscribe(AWSIoTSubscribeTopic);
+    mqttClient.subscribe(AWSIoTSubscribeTopic);
 
     Serial.println("AWS IoT Connected!");
 }
@@ -158,6 +158,6 @@ void setup() {
 }
 
 void loop() {
-    client.loop();
+    mqttClient.loop();
     delay(1000);
 }
