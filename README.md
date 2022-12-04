@@ -49,7 +49,7 @@ aws s3 cp .pio/build/<ENVIRONMENT>/firmware.bin s3://<BUCKET_NAME>/<THING_NAME>/
 2. IoTデバイスへ通知する。
 
 - トピック名：`<THING_NAME>/OTA`
-- payload：URLを指定出来るようにするつもりだが、現在は固定になっているので、空のpayloadで良い。
+- payload：URLを指定出来るようにするつもりだが、現在は各モノに対して`/<THING_NAME>/firmware.bin`で固定になっているので、空のpayloadで良い。
     ```json
     {}
     ```
