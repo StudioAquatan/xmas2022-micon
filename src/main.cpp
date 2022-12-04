@@ -21,8 +21,8 @@
 #include "secrets.h"
 
 // The MQTT topics that this device should publish/subscribe
-char aws_iot_publish_topic[128];
-char aws_iot_subscribe_topic[128];
+char AWSIoTPublishTopic[128];
+char AWSIoTSubscribeTopic[128];
 
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(256);
@@ -49,7 +49,7 @@ void publishMessage() {
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
-    client.publish(aws_iot_publish_topic, jsonBuffer);
+    client.publish(AWSIoTPublishTopic, jsonBuffer);
 }
 
 void messageHandler(String &topic, String &payload) {
@@ -140,7 +140,7 @@ void connectAWS() {
     }
 
     // Subscribe to a topic
-    client.subscribe(aws_iot_subscribe_topic);
+    client.subscribe(AWSIoTSubscribeTopic);
 
     Serial.println("AWS IoT Connected!");
 }
@@ -148,10 +148,10 @@ void connectAWS() {
 void setup() {
     Serial.begin(9600);
 
-    sprintf(aws_iot_publish_topic, "$aws/things/%s/shadow/update", THINGNAME);
-    sprintf(aws_iot_subscribe_topic, "$aws/things/%s/shadow/update/delta", THINGNAME);
-    Serial.printf("pubTopicShadow=%s\n", aws_iot_publish_topic);
-    Serial.printf("subTopicShadow=%s\n", aws_iot_subscribe_topic);
+    sprintf(AWSIoTPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
+    sprintf(AWSIoTSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
+    Serial.printf("pubTopicShadow=%s\n", AWSIoTPublishTopic);
+    Serial.printf("subTopicShadow=%s\n", AWSIoTSubscribeTopic);
 
     connectAWS();
     publishMessage();
