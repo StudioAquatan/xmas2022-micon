@@ -16,7 +16,7 @@
 
 AWS IoT CoreのDevice Shadowの機能を利用して、IoTデバイスへ通知する。
 
-例えば、モノ`<THING_NAME>`の点灯パターンを`<PATTERN_NUMBER>`に変更する場合は、
+例えば、モノ`<THING_NAME>`の点灯パターン(数値)を`<PATTERN_NUMBER>`に変更する場合は、
 
 - トピック名：`$aws/things/<THING_NAME>/shadow/update`
 - payload：
