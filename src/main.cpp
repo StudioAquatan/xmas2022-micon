@@ -24,7 +24,7 @@
 char AWSIoTPublishTopic[128];
 char AWSIoTSubscribeTopic[128];
 
-WiFiClientSecure net = WiFiClientSecure();
+WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 MQTTClient mqttClient = MQTTClient(256);
 
 volatile uint8_t gCurrentPatternNumber = 0;
@@ -117,12 +117,12 @@ void connectAWS() {
     }
 
     // Configure WiFiClientSecure to use the AWS IoT device credentials
-    net.setCACert(AWS_CERT_CA);
-    net.setCertificate(AWS_CERT_CRT);
-    net.setPrivateKey(AWS_CERT_PRIVATE);
+    wifiClientMQTT.setCACert(AWS_CERT_CA);
+    wifiClientMQTT.setCertificate(AWS_CERT_CRT);
+    wifiClientMQTT.setPrivateKey(AWS_CERT_PRIVATE);
 
     // Connect to the MQTT broker on the AWS endpoint we defined earlier
-    mqttClient.begin(AWS_IOT_ENDPOINT, 8883, net);
+    mqttClient.begin(AWS_IOT_ENDPOINT, 8883, wifiClientMQTT);
 
     // Create a message handler
     mqttClient.onMessage(updateStateHandler);
