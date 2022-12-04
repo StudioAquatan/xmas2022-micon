@@ -1,27 +1,34 @@
+#include "aws.h"
+
 #include <pgmspace.h>
 
-#define SECRET
-#define THINGNAME ""
+char awsIoTPublishTopic[128];
+char awsIoTSubscribeTopic[128];
+char otaURLSubscribeTopic[128];
 
-const char WIFI_SSID[] = "";
-const char WIFI_PASSWORD[] = "";
 const char AWS_IOT_ENDPOINT[] = "xxxxx.iot.xxxxx.amazonaws.com";
 const char AWS_S3_ENDPOINT[] = "xxxxx.s3.xxxxx.amazonaws.com";
 
 // Amazon Root CA 1
-static const char AWS_CERT_CA[] PROGMEM = R"EOF(
+const char AWS_CERT_CA[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 )EOF";
 
+#ifdef AWS_IOT_THING_ESP32Sample
+
+const char THINGNAME[] = "ESP32Sample";
+
 // Device Certificate
-static const char AWS_CERT_CRT[] PROGMEM = R"KEY(
+const char AWS_CERT_CRT[] PROGMEM = R"KEY(
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 )KEY";
 
 // Device Private Key
-static const char AWS_CERT_PRIVATE[] PROGMEM = R"KEY(
+const char AWS_CERT_PRIVATE[] PROGMEM = R"KEY(
 -----BEGIN RSA PRIVATE KEY-----
 -----END RSA PRIVATE KEY-----
 )KEY";
+
+#endif  // AWS_IOT_THING_ESP32Sample

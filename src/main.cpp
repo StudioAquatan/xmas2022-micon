@@ -1,15 +1,11 @@
 #include <ArduinoJson.h>
 #include <MQTTClient.h>
 #include <Update.h>
+#include <WiFi.h>
 #include <WiFiClientSecure.h>
 
-#include "WiFi.h"
-#include "secrets.h"
-
-// The MQTT topics that this device should publish/subscribe
-char awsIoTPublishTopic[128];
-char awsIoTSubscribeTopic[128];
-char otaURLSubscribeTopic[128];
+#include "aws.h"
+#include "wifi_configs.h"
 
 WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 WiFiClientSecure wifiClientOTA = WiFiClientSecure();
