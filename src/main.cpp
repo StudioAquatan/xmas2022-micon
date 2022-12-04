@@ -29,7 +29,7 @@ MQTTClient client = MQTTClient(256);
 
 volatile uint8_t gCurrentPatternNumber = 0;
 
-void publishMessage() {
+void publishCurrentPatternNumber() {
     /* Example of publishing a message
         {
             "state": {
@@ -52,7 +52,7 @@ void publishMessage() {
     client.publish(AWSIoTPublishTopic, jsonBuffer);
 }
 
-void messageHandler(String &topic, String &payload) {
+void updateStateHandler(String &topic, String &payload) {
     /* Example of subscribing a message
     {
         "version":1102,
@@ -101,7 +101,7 @@ void messageHandler(String &topic, String &payload) {
     } else {
         gCurrentPatternNumber = uint8_t(pattern);
         Serial.println("Changed pattern to: " + String(gCurrentPatternNumber));
-        publishMessage();
+        publishCurrentPatternNumber();
     }
 }
 
@@ -125,7 +125,7 @@ void connectAWS() {
     client.begin(AWS_IOT_ENDPOINT, 8883, net);
 
     // Create a message handler
-    client.onMessage(messageHandler);
+    client.onMessage(updateStateHandler);
 
     Serial.print("Connecting to AWS IOT");
 
@@ -154,7 +154,7 @@ void setup() {
     Serial.printf("subTopicShadow=%s\n", AWSIoTSubscribeTopic);
 
     connectAWS();
-    publishMessage();
+    publishCurrentPatternNumber();
 }
 
 void loop() {
