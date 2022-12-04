@@ -323,7 +323,7 @@ void setup() {
 
     sprintf(awsIoTPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
     sprintf(awsIoTSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
-    sprintf(otaURLSubscribeTopic, "%s/ota/url", THINGNAME);
+    sprintf(otaURLSubscribeTopic, "%s/OTA", THINGNAME);
     sprintf(binaryPath, "/%s/firmware.bin", THINGNAME);
     Serial.printf("pubTopicShadow=%s\n", awsIoTPublishTopic);
     Serial.printf("subTopicShadow=%s\n", awsIoTSubscribeTopic);
