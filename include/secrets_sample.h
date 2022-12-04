@@ -20,7 +20,8 @@
 
 const char WIFI_SSID[] = "";
 const char WIFI_PASSWORD[] = "";
-const char AWS_IOT_ENDPOINT[] = "xxxxx.amazonaws.com";
+const char AWS_IOT_ENDPOINT[] = "xxxxx.iot.xxxxx.amazonaws.com";
+const char AWS_S3_ENDPOINT[] = "xxxxx.s3.xxxxx.amazonaws.com";
 
 // Amazon Root CA 1
 static const char AWS_CERT_CA[] PROGMEM = R"EOF(
