@@ -133,6 +133,7 @@ void connectAWS() {
         Serial.print(".");
         delay(100);
     }
+    Serial.println("");
 
     if (!mqttClient.connected()) {
         Serial.println("AWS IoT Timeout!");
