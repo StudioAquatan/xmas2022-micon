@@ -21,8 +21,8 @@
 #include "secrets.h"
 
 // The MQTT topics that this device should publish/subscribe
-char AWSIoTPublishTopic[128];
-char AWSIoTSubscribeTopic[128];
+char awsIoTPublishTopic[128];
+char awsIoTSubscribeTopic[128];
 
 WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 MQTTClient mqttClient = MQTTClient(256);
@@ -49,7 +49,7 @@ void publishCurrentPatternNumber() {
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
-    mqttClient.publish(AWSIoTPublishTopic, jsonBuffer);
+    mqttClient.publish(awsIoTPublishTopic, jsonBuffer);
 }
 
 void updateStateHandler(String &topic, String &payload) {
@@ -141,7 +141,7 @@ void connectAWS() {
     }
 
     // Subscribe to a topic
-    mqttClient.subscribe(AWSIoTSubscribeTopic);
+    mqttClient.subscribe(awsIoTSubscribeTopic);
 
     Serial.println("AWS IoT Connected!");
 }
@@ -149,10 +149,10 @@ void connectAWS() {
 void setup() {
     Serial.begin(9600);
 
-    sprintf(AWSIoTPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
-    sprintf(AWSIoTSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
-    Serial.printf("pubTopicShadow=%s\n", AWSIoTPublishTopic);
-    Serial.printf("subTopicShadow=%s\n", AWSIoTSubscribeTopic);
+    sprintf(awsIoTPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
+    sprintf(awsIoTSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
+    Serial.printf("pubTopicShadow=%s\n", awsIoTPublishTopic);
+    Serial.printf("subTopicShadow=%s\n", awsIoTSubscribeTopic);
 
     connectAWS();
     publishCurrentPatternNumber();
