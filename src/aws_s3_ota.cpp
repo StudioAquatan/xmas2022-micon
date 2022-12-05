@@ -10,7 +10,6 @@
 static WiFiClientSecure wifiClientOTA = WiFiClientSecure();
 
 // S3 Bucket Config
-static int awsS3Port = 443;
 char binaryPath[128];
 
 // Variables to validate
@@ -27,7 +26,7 @@ void execOTA(String &payload) {
     Serial.println("Connecting to: " + String(AWS_S3_ENDPOINT));
     wifiClientOTA.setCACert(AWS_CERT_CA);
     // Connect to S3
-    if (wifiClientOTA.connect(AWS_S3_ENDPOINT, awsS3Port)) {
+    if (wifiClientOTA.connect(AWS_S3_ENDPOINT, AWS_S3_PORT)) {
         // Connection Succeed.
         // Fecthing the bin
         Serial.println("Fetching Bin: " + String(binaryPath));

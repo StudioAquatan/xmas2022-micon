@@ -6,7 +6,9 @@ extern char awsIoTSubscribeTopic[128];
 extern char otaURLSubscribeTopic[128];
 
 extern const char AWS_IOT_ENDPOINT[];
+extern const int AWS_IOT_PORT;
 extern const char AWS_S3_ENDPOINT[];
+extern const int AWS_S3_PORT;
 
 extern const char THINGNAME[];
 extern const char AWS_CERT_CA[];
