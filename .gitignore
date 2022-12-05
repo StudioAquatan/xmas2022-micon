@@ -7,3 +7,5 @@
 .vscode/ipch
 
 secrets
+!lib/secrets
+!lib/secrets/include/secrets

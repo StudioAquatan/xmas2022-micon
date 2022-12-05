@@ -4,8 +4,8 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 
-#include "aws.h"
-#include "wifi_configs.h"
+#include "secrets/aws.h"
+#include "secrets/wifi_configs.h"
 
 WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 WiFiClientSecure wifiClientOTA = WiFiClientSecure();
