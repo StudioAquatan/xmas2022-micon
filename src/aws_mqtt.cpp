@@ -10,16 +10,6 @@ WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 MQTTClient mqttClient = MQTTClient(256);
 
 void connectAWS() {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    Serial.println("Connecting to Wi-Fi");
-
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-
     // Configure WiFiClientSecure to use the AWS IoT device credentials
     wifiClientMQTT.setCACert(AWS_CERT_CA);
     wifiClientMQTT.setCertificate(AWS_CERT_CRT);

@@ -8,6 +8,7 @@
 #include "aws_s3_ota.h"
 #include "secrets/aws.h"
 #include "secrets/wifi_configs.h"
+#include "wifi_eap.h"
 
 volatile uint8_t gCurrentPatternNumber = 0;
 
@@ -22,6 +23,7 @@ void setup() {
     Serial.printf("subTopicShadow=%s\n", awsIoTSubscribeTopic);
     Serial.printf("subTopicOTA=%s\n", otaURLSubscribeTopic);
 
+    setupWiFi();
     connectAWS();
     publishCurrentPatternNumber();
 }
