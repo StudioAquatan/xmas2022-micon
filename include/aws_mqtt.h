@@ -9,6 +9,7 @@ extern MQTTClient mqttClient;
 
 extern void setupAWSIoT();
 extern void publishCurrentPatternNumber();
+extern void publishHeatbeat();
 extern void updateState(String &payload);
 extern void messageHandler(String &topic, String &payload);
 

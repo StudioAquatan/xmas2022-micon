@@ -18,6 +18,7 @@ void setup() {
 
     sprintf(deviceShadowPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
     sprintf(deviceShadowSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
+    sprintf(heatbeatPublishTopic, "%s/heatbeat", THINGNAME);
     sprintf(otaURLSubscribeTopic, "%s/OTA", THINGNAME);
     sprintf(binaryPath, "/%s/firmware.bin", THINGNAME);
     Serial.printf("pubTopicShadow=%s\n", deviceShadowPublishTopic);
@@ -50,6 +51,7 @@ void loop() {
         // publish a heatbeat roughly every second.
         if (millis() - lastMillis > 60000) {
             lastMillis = millis();
+            publishHeatbeat();
         }
     }
 

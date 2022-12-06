@@ -3,6 +3,7 @@
 
 extern char deviceShadowPublishTopic[128];
 extern char deviceShadowSubscribeTopic[128];
+extern char heatbeatPublishTopic[128];
 extern char otaURLSubscribeTopic[128];
 
 struct host_info {
