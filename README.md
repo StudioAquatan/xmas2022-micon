@@ -24,7 +24,7 @@ AWS IoT CoreのDevice Shadowの機能を利用して、IoTデバイスへ通知�
     {
         "state": { 
             "desired": {
-                "pattern": <PATTERN_NUMBER> 
+                "patternId": <PATTERN_NUMBER>
             }
         } 
     }
@@ -33,7 +33,7 @@ AWS IoT CoreのDevice Shadowの機能を利用して、IoTデバイスへ通知�
 にpayloadをPublishする。
 
 ```bash
-aws iot-data publish --topic "\$aws/things/<THING_NAME>/shadow/update" --cli-binary-format raw-in-base64-out --payload '{"state": { "desired": { "pattern": <PATTERN_NUMBER> } } }'
+aws iot-data publish --topic "\$aws/things/<THING_NAME>/shadow/update" --cli-binary-format raw-in-base64-out --payload '{"state": { "desired": { "patternId": <PATTERN_NUMBER> } } }'
 ```
 
 ## OTA

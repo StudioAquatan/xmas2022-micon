@@ -46,7 +46,7 @@ void publishCurrentPatternNumber() {
         {
             "state": {
                 "reported": {
-                    "pattern": 1
+                    "patternId": 1
                 }
             }
         }
@@ -57,7 +57,7 @@ void publishCurrentPatternNumber() {
     JsonObject root = doc.to<JsonObject>();
     JsonObject state = root.createNestedObject("state");
     JsonObject reported = state.createNestedObject("reported");
-    reported["pattern"] = gCurrentPatternNumber;
+    reported["patternId"] = gCurrentPatternNumber;
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
@@ -117,9 +117,9 @@ void updateState(String &payload) {
             break;
     }
 
-    auto pattern = doc["state"]["pattern"] | -1;
+    auto pattern = doc["state"]["patternId"] | -1;
     if (pattern == -1) {
-        Serial.println("Payload did not contain a pattern. Skipping.");
+        Serial.println("Payload did not contain a \"patternId\". Skipping.");
     } else {
         gCurrentPatternNumber = uint8_t(pattern);
         Serial.println("Changed pattern to: " + String(gCurrentPatternNumber));
