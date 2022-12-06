@@ -6,7 +6,7 @@
 #include "secrets/aws.h"
 #include "secrets/wifi_configs.h"
 
-WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
+static WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 MQTTClient mqttClient = MQTTClient(256);
 
 void connectAWS() {

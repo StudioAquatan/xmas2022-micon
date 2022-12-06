@@ -5,7 +5,6 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 
-extern WiFiClientSecure wifiClientMQTT;
 extern MQTTClient mqttClient;
 
 extern void connectAWS();
