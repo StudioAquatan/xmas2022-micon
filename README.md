@@ -48,14 +48,26 @@ aws s3 cp .pio/build/<ENVIRONMENT>/firmware.bin s3://<BUCKET_NAME>/<THING_NAME>/
 
 2. IoTデバイスへ通知する。
 
-- トピック名：`<THING_NAME>/OTA`
-- payload：URLを指定出来るようにするつもりだが、現在は各モノに対して`/<THING_NAME>/firmware.bin`で固定になっているので、空のpayloadで良い。
+- トピック名：`<THING_NAME>/OTA/request`
+- payload：
     ```json
-    {}
+    {
+        "state": "Request"
+    }
     ```
 
 にpayloadをPublishする。
 
 ```bash
-aws iot-data publish --topic "<THING_NAME>/OTA" --cli-binary-format raw-in-base64-out --payload '{}'
+aws iot-data publish --topic "<THING_NAME>/OTA/request" --cli-binary-format raw-in-base64-out --payload '{"state": "Request"}'
 ```
+
+3. IoTデバイスがリクエストを受け付けた場合、以下のメッセージを受け取る。
+
+- トピック名：`<THING_NAME>/OTA/reply`
+- payload：
+    ```json
+    {
+        "state": "Received"
+    }
+    ```

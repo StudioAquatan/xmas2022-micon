@@ -4,6 +4,6 @@
 #include "Arduino.h"
 
 extern char binaryPath[128];
-extern void execOTA(String &payload);
+extern void execOTA();
 
 #endif  // INCLUDE_GUARD_AWS_S3_OTA_H

@@ -1,6 +1,5 @@
 #include "aws_s3_ota.h"
 
-#include <MQTTClient.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 
@@ -22,7 +21,7 @@ static String getHeaderValue(String header, String headerName) {
     return header.substring(strlen(headerName.c_str()));
 }
 
-void execOTA(String &payload) {
+void execOTA() {
     Serial.println("Connecting to: " + String(awsS3Info.endpoint));
     wifiClientOTA.setCACert(AWS_CERT_CA);
     // Connect to S3
