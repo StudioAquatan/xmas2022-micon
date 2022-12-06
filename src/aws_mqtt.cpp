@@ -9,7 +9,7 @@
 static WiFiClientSecure wifiClientMQTT = WiFiClientSecure();
 MQTTClient mqttClient = MQTTClient(256);
 
-void connectAWS() {
+void setupAWSIoT() {
     // Configure WiFiClientSecure to use the AWS IoT device credentials
     wifiClientMQTT.setCACert(AWS_CERT_CA);
     wifiClientMQTT.setCertificate(AWS_CERT_CRT);

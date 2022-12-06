@@ -10,6 +10,7 @@
 #include "secrets/wifi_configs.h"
 #include "wifi_eap.h"
 
+unsigned long lastMillis = 0;
 volatile uint8_t gCurrentPatternNumber = 0;
 
 void setup() {
@@ -24,11 +25,33 @@ void setup() {
     Serial.printf("subTopicOTA=%s\n", otaURLSubscribeTopic);
 
     setupWiFi();
-    connectAWS();
+    setupAWSIoT();
     publishCurrentPatternNumber();
 }
 
 void loop() {
     mqttClient.loop();
+
+    // WiFiの再接続を待って、MQTTを接続しにいく
+    if (WiFi.status() == WL_CONNECTED && !mqttClient.connected()) {
+        while (!mqttClient.connect(THINGNAME)) {
+            Serial.print(".");
+            delay(100);
+        }
+        Serial.println("");
+
+        if (!mqttClient.connected()) {
+            Serial.println("AWS IoT Timeout!");
+            return;
+        }
+    }
+
+    if (mqttClient.connected()) {
+        // publish a heatbeat roughly every second.
+        if (millis() - lastMillis > 60000) {
+            lastMillis = millis();
+        }
+    }
+
     delay(1000);
 }
