@@ -16,12 +16,12 @@ volatile uint8_t gCurrentPatternNumber = 0;
 void setup() {
     Serial.begin(9600);
 
-    sprintf(awsIoTPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
-    sprintf(awsIoTSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
+    sprintf(deviceShadowPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
+    sprintf(deviceShadowSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
     sprintf(otaURLSubscribeTopic, "%s/OTA", THINGNAME);
     sprintf(binaryPath, "/%s/firmware.bin", THINGNAME);
-    Serial.printf("pubTopicShadow=%s\n", awsIoTPublishTopic);
-    Serial.printf("subTopicShadow=%s\n", awsIoTSubscribeTopic);
+    Serial.printf("pubTopicShadow=%s\n", deviceShadowPublishTopic);
+    Serial.printf("subTopicShadow=%s\n", deviceShadowSubscribeTopic);
     Serial.printf("subTopicOTA=%s\n", otaURLSubscribeTopic);
 
     setupWiFi();

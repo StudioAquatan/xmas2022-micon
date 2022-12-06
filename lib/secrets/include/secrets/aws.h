@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_AWS_H
 #define INCLUDE_GUARD_AWS_H
 
-extern char awsIoTPublishTopic[128];
-extern char awsIoTSubscribeTopic[128];
+extern char deviceShadowPublishTopic[128];
+extern char deviceShadowSubscribeTopic[128];
 extern char otaURLSubscribeTopic[128];
 
 struct host_info {

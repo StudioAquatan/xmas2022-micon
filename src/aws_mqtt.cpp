@@ -35,7 +35,7 @@ void setupAWSIoT() {
     }
 
     // Subscribe to a topic
-    mqttClient.subscribe(awsIoTSubscribeTopic);
+    mqttClient.subscribe(deviceShadowSubscribeTopic);
     mqttClient.subscribe(otaURLSubscribeTopic);
 
     Serial.println("AWS IoT Connected!");
@@ -61,7 +61,7 @@ void publishCurrentPatternNumber() {
     char jsonBuffer[512];
     serializeJson(doc, jsonBuffer);  // print to client
 
-    mqttClient.publish(awsIoTPublishTopic, jsonBuffer);
+    mqttClient.publish(deviceShadowPublishTopic, jsonBuffer);
 }
 
 void updateState(String &payload) {
@@ -120,7 +120,7 @@ void messageHandler(String &topic, String &payload) {
     Serial.println("incoming: " + topic + " - " + payload);
     if (topic == otaURLSubscribeTopic) {
         execOTA(payload);
-    } else if (topic == awsIoTSubscribeTopic) {
+    } else if (topic == deviceShadowSubscribeTopic) {
         updateState(payload);
     }
 }
