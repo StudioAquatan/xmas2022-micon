@@ -79,7 +79,7 @@ void mqtt_main_loop(void *arg) {
             // publish a heatbeat roughly every second.
             if (millis() - lastMillis > 60000) {
                 lastMillis = millis();
-                publishHeatbeat();
+                publishCurrentPatternNumber();
             }
         }
 

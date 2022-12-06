@@ -64,17 +64,6 @@ void publishCurrentPatternNumber() {
     mqttClient.publish(deviceShadowPublishTopic, jsonBuffer);
 }
 
-void publishHeatbeat() {
-    const int capacity = JSON_OBJECT_SIZE(1);
-    StaticJsonDocument<capacity> doc;
-
-    JsonObject root = doc.to<JsonObject>();
-    char jsonBuffer[512];
-    serializeJson(doc, jsonBuffer);
-
-    mqttClient.publish(heatbeatPublishTopic, jsonBuffer);
-}
-
 void updateState(String &payload) {
     /* Example of subscribing a message
     {
