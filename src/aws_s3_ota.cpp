@@ -23,17 +23,17 @@ static String getHeaderValue(String header, String headerName) {
 }
 
 void execOTA(String &payload) {
-    Serial.println("Connecting to: " + String(AWS_S3_ENDPOINT));
+    Serial.println("Connecting to: " + String(awsS3Info.endpoint));
     wifiClientOTA.setCACert(AWS_CERT_CA);
     // Connect to S3
-    if (wifiClientOTA.connect(AWS_S3_ENDPOINT, AWS_S3_PORT)) {
+    if (wifiClientOTA.connect(awsS3Info.endpoint, awsS3Info.port)) {
         // Connection Succeed.
         // Fecthing the bin
         Serial.println("Fetching Bin: " + String(binaryPath));
 
         // Get the contents of the bin file
         wifiClientOTA.print(String("GET ") + String(binaryPath) + " HTTP/1.1\r\n" +
-                            "Host: " + String(AWS_S3_ENDPOINT) + "\r\n" +
+                            "Host: " + String(awsS3Info.endpoint) + "\r\n" +
                             "Cache-Control: no-cache\r\n" +
                             "Connection: close\r\n\r\n");
 
@@ -116,7 +116,7 @@ void execOTA(String &payload) {
         // Connect to S3 failed
         // May be try?
         // Probably a choppy network?
-        Serial.println("Connection to " + String(AWS_S3_ENDPOINT) + " failed. Please check your setup");
+        Serial.println("Connection to " + String(awsS3Info.endpoint) + " failed. Please check your setup");
         // retry??
         // execOTA();
     }

@@ -16,7 +16,7 @@ void connectAWS() {
     wifiClientMQTT.setPrivateKey(AWS_CERT_PRIVATE);
 
     // Connect to the MQTT broker on the AWS endpoint we defined earlier
-    mqttClient.begin(AWS_IOT_ENDPOINT, AWS_IOT_PORT, wifiClientMQTT);
+    mqttClient.begin(awsIoTInfo.endpoint, awsIoTInfo.port, wifiClientMQTT);
 
     // Create a message handler
     mqttClient.onMessage(messageHandler);
