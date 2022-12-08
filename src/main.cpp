@@ -4,6 +4,8 @@
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 
+#include "FastLED.h"
+#include "LEDPatterns.h"
 #include "aws_mqtt.h"
 #include "aws_s3_ota.h"
 #include "secrets/aws.h"
@@ -11,7 +13,6 @@
 #include "wifi_eap.h"
 
 unsigned long lastMillis = 0;
-volatile uint8_t gCurrentPatternNumber = 0;
 
 void mqtt_main_loop(void *arg);
 void led_main_loop(void *arg);
@@ -19,6 +20,10 @@ void led_main_loop(void *arg);
 void setup() {
     delay(3000);
     Serial.begin(9600);
+    pinMode(LED_BUILTIN, OUTPUT);
+
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+    FastLED.setBrightness(BRIGHTNESS);
 
     sprintf(deviceShadowPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
     sprintf(deviceShadowSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
@@ -92,7 +97,7 @@ void mqtt_main_loop(void *arg) {
 
 void led_main_loop(void *arg) {
     while (1) {
-        Serial.println("led_main_loop");
-        delay(1000);
+        selectPattern(gCurrentPatternNumber);
+        FastLED.show();
     }
 }
