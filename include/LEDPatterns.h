@@ -35,9 +35,6 @@ extern LEDPatternList gPatterns;
 extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();
 
-extern void xmas_colors();
-extern void xmas_snow();
-
 extern void white();
 extern void white_fade();
 extern void pink();
