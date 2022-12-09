@@ -2,6 +2,7 @@
 
 #include <FastLED.h>
 
+#include "patterns/twitter.h"
 #include "patterns/utils.h"
 #include "patterns/xmas_tree.h"
 
@@ -10,8 +11,8 @@ FASTLED_USING_NAMESPACE
 CRGB leds[NUM_LEDS];
 
 volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
-uint8_t gHue = 0;                            // rotating "base color" used by many of the patterns
-uint8_t gLoopCount = 0;
+static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
+static uint8_t loopCount = 0;
 
 LEDPatternList gPatterns = {
     retweet,                // 0 - リツイート
@@ -96,69 +97,6 @@ DEFINE_GRADIENT_PALETTE(white_pink_blue_gp){
 
 CRGBPalette16 gWhitePinkPalette = white_pink_gp;
 CRGBPalette16 gWhitePinkBluePalette = white_pink_blue_gp;
-
-void retweet() {
-    uint8_t pos1 = map(beat8(40, 0), 0, 255, 0, NUM_LEDS - 1);
-    uint8_t pos2 = map(beat8(40, 333), 0, 255, 0, NUM_LEDS - 1);
-    uint8_t pos3 = map(beat8(40, 666), 0, 255, 0, NUM_LEDS - 1);
-    leds[pos1] = CRGB::Green;
-    leds[pos2] = CRGB::Yellow;
-    leds[pos3] = CRGB::Green;
-
-    fadeToBlackBy(leds, NUM_LEDS, 3);
-
-    FastLED.delay(2);
-    FastLED.show();
-}
-
-void heart() {
-    uint8_t sinBeat1 = beatsin8(30, 0, NUM_LEDS - 1, 0, 0);
-    uint8_t sinBeat2 = beatsin8(30, 0, NUM_LEDS - 1, 0, 127);
-
-    leds[sinBeat1] = CRGB::DeepPink;
-    leds[sinBeat2] = CRGB::DeepPink;
-
-    fadeToBlackBy(leds, NUM_LEDS, 5);
-
-    EVERY_N_MILLISECONDS(10) {
-        addColorGlitter(30, CRGB::Blue);
-        addColorGlitter(30, CRGB::Green);
-        addColorGlitter(30, CRGB::Orange);
-        addColorGlitter(30, CRGB::Purple);
-    }
-
-    FastLED.delay(1);
-    FastLED.show();
-}
-
-CRGBPalette16 purplePalette = CRGBPalette16(
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-
-    CRGB::Magenta,
-    CRGB::Magenta,
-    CRGB::Linen,
-    CRGB::Linen,
-
-    CRGB::Magenta,
-    CRGB::Magenta,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::Linen,
-    CRGB::Linen);
-
-void hashtag() {
-    fill_palette(leds, NUM_LEDS, gLoopCount, 255 / NUM_LEDS, purplePalette, 255, LINEARBLEND);
-
-    EVERY_N_MILLISECONDS(10) {
-        gLoopCount++;
-    }
-}
 
 void white() {
     fill_solid(leds, NUM_LEDS, CRGB::White);
@@ -251,7 +189,7 @@ void white_pink() {
 }
 
 void white_pink_flush() {
-    gLoopCount++;
+    loopCount++;
     fadeToBlackBy(leds, NUM_LEDS, 1);
     int pos = random16(NUM_LEDS);
     leds[pos] = ColorFromPalette(gWhitePinkPalette, random8(), 255, LINEARBLEND);
@@ -281,7 +219,7 @@ void white_pink_blue() {
 }
 
 void white_pink_blue_flush() {
-    gLoopCount++;
+    loopCount++;
     fadeToBlackBy(leds, NUM_LEDS, 1);
     int pos = random16(NUM_LEDS);
     leds[pos] = ColorFromPalette(gWhitePinkBluePalette, random8(), 255, LINEARBLEND);
@@ -299,7 +237,7 @@ void rainbowWithGlitter() {
 
 void confetti() {
     // random colored speckles that blink in and fade smoothly
-    gLoopCount++;
+    loopCount++;
     fadeToBlackBy(leds, NUM_LEDS, 1);
     int pos = random16(NUM_LEDS);
     leds[pos] += CHSV(gHue + random8(64), 200, 255);

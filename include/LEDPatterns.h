@@ -25,14 +25,17 @@
 #define BRIGHTNESS 96
 #define FRAMES_PER_SECOND 120
 
+extern CRGB leds[NUM_LEDS];
+extern volatile uint8_t gCurrentPatternNumber;
+
+// List of patterns to cycle through.  Each is defined as a separate function.
+typedef void (*LEDPatternList[])();
+extern LEDPatternList gPatterns;
+
 extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();
 
 extern void xmas_colors();
-
-extern void retweet();
-extern void heart();
-extern void hashtag();
 
 extern void white();
 extern void white_fade();
@@ -46,13 +49,5 @@ extern void white_pink_blue_flush();
 
 extern void rainbowWithGlitter();
 extern void confetti();
-
-extern CRGB leds[NUM_LEDS];
-extern volatile uint8_t gCurrentPatternNumber;
-extern uint8_t gHue;
-
-// List of patterns to cycle through.  Each is defined as a separate function.
-typedef void (*LEDPatternList[])();
-extern LEDPatternList gPatterns;
 
 #endif  // INCLUDE_GUARD_LEDPATTERNS_H
