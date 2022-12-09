@@ -2,6 +2,9 @@
 
 #include <FastLED.h>
 
+#include "patterns/utils.h"
+#include "patterns/xmas_tree.h"
+
 FASTLED_USING_NAMESPACE
 
 CRGB leds[NUM_LEDS];
@@ -24,7 +27,8 @@ LEDPatternList gPatterns = {
     white_pink_blue_flush,  // 10 - 白とピンクと青点滅
     rainbowWithGlitter,     // 11 - 虹1
     confetti,               // 12 - 虹2
-    rainbowPatterns         // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
+    rainbowPatterns,        // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
+    xmas_tree,              // 14 - クリスマス
 };
 
 void selectPattern(uint8_t patternNumber) {
@@ -39,6 +43,32 @@ void selectPattern(uint8_t patternNumber) {
     }
 
     gPatterns[ranged]();
+}
+
+void xmas_colors() {
+    EVERY_N_SECONDS(4) {
+        for (int i = 0; i < NUM_LEDS; i++) {
+            uint8_t r = random8(0, 4);
+            switch (r) {
+                case 0:
+                    leds[i] = CRGB::Red;
+                    break;
+                case 1:
+                    leds[i] = CRGB::Blue;
+                    break;
+                case 2:
+                    leds[i] = CRGB::Green;
+                    break;
+                case 3:
+                    leds[i] = CRGB::Orange;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    FastLED.delay(1);
+    FastLED.show();
 }
 
 uint8_t gCurrentRainbowPatternNumber = 0;
@@ -265,18 +295,6 @@ void rainbowWithGlitter() {
     addGlitter(30);
     EVERY_N_MILLISECONDS(100) { gHue++; }
     FastLED.delay(10);
-}
-
-void addGlitter(fract8 chanceOfGlitter) {
-    if (random8() < chanceOfGlitter) {
-        leds[random16(NUM_LEDS)] += CRGB::White;
-    }
-}
-
-void addColorGlitter(fract8 chanceOfGlitter, CRGB color) {
-    if (random8() < chanceOfGlitter) {
-        leds[random16(NUM_LEDS)] = color;
-    }
 }
 
 void confetti() {

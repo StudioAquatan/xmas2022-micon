@@ -14,15 +14,21 @@
 #ifdef AWS_IOT_THING_ESP32Sample
 #define COLOR_ORDER RGB
 #define NUM_LEDS 100
+#define STAR_LEDS 20
+#define TREE_LEDS (NUM_LEDS - STAR_LEDS)
+#define TREE_LED_BEGIN 0
+#define TREE_LED_END TREE_LEDS
+#define STAR_LED_BEGIN TREE_LEDS
+#define STAR_LED_END NUM_LEDS
 #endif  // AWS_IOT_THING_ESP32Sample
 
 #define BRIGHTNESS 96
 #define FRAMES_PER_SECOND 120
 
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
-
 extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();
+
+extern void xmas_colors();
 
 extern void retweet();
 extern void heart();
@@ -39,8 +45,6 @@ extern void white_pink_flush();
 extern void white_pink_blue_flush();
 
 extern void rainbowWithGlitter();
-extern void addGlitter(fract8 chanceOfGlitter);
-extern void addColorGlitter(fract8 chanceOfGlitter, CRGB color);
 extern void confetti();
 
 extern CRGB leds[NUM_LEDS];
