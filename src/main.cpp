@@ -27,13 +27,11 @@ void setup() {
 
     sprintf(deviceShadowPublishTopic, "$aws/things/%s/shadow/update", THINGNAME);
     sprintf(deviceShadowSubscribeTopic, "$aws/things/%s/shadow/update/delta", THINGNAME);
-    sprintf(heatbeatPublishTopic, "%s/heatbeat", THINGNAME);
     sprintf(otaReplyPublishTopic, "%s/OTA/reply", THINGNAME);
     sprintf(otaRequestSubscribeTopic, "%s/OTA/request", THINGNAME);
     sprintf(binaryPath, "/%s/firmware.bin", THINGNAME);
     Serial.printf("deviceShadowPublishTopic=%s\n", deviceShadowPublishTopic);
     Serial.printf("deviceShadowSubscribeTopic=%s\n", deviceShadowSubscribeTopic);
-    Serial.printf("heatbeatPublishTopic=%s\n", heatbeatPublishTopic);
     Serial.printf("otaReplyPublishTopic=%s\n", otaReplyPublishTopic);
     Serial.printf("otaRequestSubscribeTopic=%s\n", otaRequestSubscribeTopic);
 
