@@ -62,3 +62,27 @@ void xmas_snow() {
         FastLED.show();
     }
 }
+
+void xmas_autumn() {
+    set_xmas_tree_star();
+    EVERY_N_SECONDS(4) {
+        for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+            uint8_t r = random8(0, 5);
+            switch (r) {
+                case 0:
+                case 1:
+                    leds[i] = CRGB::Red;
+                    break;
+                case 2:
+                case 3:
+                    leds[i] = CRGB::Orange;
+                    break;
+                case 4:
+                    leds[i] = CRGB::Yellow;
+                    break;
+            }
+        }
+        FastLED.delay(1);
+        FastLED.show();
+    }
+}

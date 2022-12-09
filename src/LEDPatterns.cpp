@@ -32,6 +32,7 @@ LEDPatternList gPatterns = {
     xmas_tree,              // 14 - クリスマス
     xmas_colors,            // 15 - クリスマスの色
     xmas_snow,              // 16 - クリスマスの雪
+    xmas_autumn,            // 17 - クリスマスの紅葉
 };
 
 void selectPattern(uint8_t patternNumber) {
