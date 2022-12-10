@@ -22,7 +22,7 @@
 #define STAR_LED_END NUM_LEDS
 #endif  // AWS_IOT_THING_ESP32Sample
 
-#define BRIGHTNESS 96
+#define BRIGHTNESS 50
 #define FRAMES_PER_SECOND 120
 
 extern CRGB leds[NUM_LEDS];
