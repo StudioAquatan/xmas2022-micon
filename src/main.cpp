@@ -100,6 +100,5 @@ void mqtt_main_loop(void *arg) {
 void led_main_loop(void *arg) {
     while (1) {
         selectPattern(gCurrentPatternNumber);
-        FastLED.show();
     }
 }

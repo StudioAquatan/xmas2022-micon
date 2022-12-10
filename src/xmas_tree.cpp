@@ -17,7 +17,7 @@ void set_xmas_tree_body() {
 void xmas_tree() {
     set_xmas_tree_star();
     set_xmas_tree_body();
-    FastLED.delay(1);
+    FastLED.show();
 }
 
 void xmas_colors() {
@@ -43,7 +43,6 @@ void xmas_colors() {
             }
         }
     }
-    FastLED.delay(1);
     FastLED.show();
 }
 
@@ -72,7 +71,7 @@ void xmas_christmas_candy() {
             gColorIndex[i] += 1;
         }
     }
-    FastLED.delay(1);
+    FastLED.show();
 }
 
 void xmas_snow() {
@@ -86,9 +85,8 @@ void xmas_snow() {
                 leds[i] = CRGB::Green;
             }
         }
-        FastLED.delay(1);
-        FastLED.show();
     }
+    FastLED.show();
 }
 
 void xmas_autumn() {
@@ -110,7 +108,6 @@ void xmas_autumn() {
                     break;
             }
         }
-        FastLED.delay(1);
-        FastLED.show();
     }
+    FastLED.show();
 }
