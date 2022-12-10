@@ -15,26 +15,6 @@ volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is
 static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
 static uint8_t loopCount = 0;
 
-void rgb_pattern() {
-    EVERY_N_SECONDS(1) {
-        loopCount++;
-        for (int i = 0; i < NUM_LEDS; i++) {
-            switch (loopCount % 3) {
-                case 0:
-                    leds[i] = CRGB::Red;
-                    break;
-                case 1:
-                    leds[i] = CRGB::Green;
-                    break;
-                case 2:
-                    leds[i] = CRGB::Blue;
-                    break;
-            }
-        }
-    }
-    FastLED.show();
-}
-
 LEDPatternList gPatterns = {
     retweet,                // 0 - リツイート
     heart,                  // 1 - いいね
@@ -97,6 +77,26 @@ DEFINE_GRADIENT_PALETTE(white_pink_blue_gp){
 
 CRGBPalette16 gWhitePinkPalette = white_pink_gp;
 CRGBPalette16 gWhitePinkBluePalette = white_pink_blue_gp;
+
+void rgb_pattern() {
+    EVERY_N_SECONDS(1) {
+        loopCount++;
+        for (int i = 0; i < NUM_LEDS; i++) {
+            switch (loopCount % 3) {
+                case 0:
+                    leds[i] = CRGB::Red;
+                    break;
+                case 1:
+                    leds[i] = CRGB::Green;
+                    break;
+                case 2:
+                    leds[i] = CRGB::Blue;
+                    break;
+            }
+        }
+    }
+    FastLED.show();
+}
 
 void white() {
     fill_solid(leds, NUM_LEDS, CRGB::White);

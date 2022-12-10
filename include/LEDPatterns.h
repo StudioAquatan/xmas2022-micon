@@ -36,6 +36,7 @@ extern uint8_t gColorIndex[NUM_LEDS];
 extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();
 
+extern void rgb_pattern();
 extern void white();
 extern void white_fade();
 extern void pink();
