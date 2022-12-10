@@ -13,7 +13,7 @@ uint8_t gColorIndex[NUM_LEDS];
 
 volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
 static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
-static uint8_t loopCount = 0;
+uint8_t loopCount = 0;
 
 LEDPatternList gPatterns = {
     retweet,                // 0 - リツイート
@@ -52,11 +52,46 @@ void selectPattern(uint8_t patternNumber) {
     gPatterns[ranged]();
 }
 
+bool fadeMode = false;
+int fadeCount = 0;
+
 void xmas_tree_init() {
     set_xmas_tree_star();
-    addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
-    set_xmas_tree_body();
-    FastLED.delay(10);
+    EVERY_N_MILLIS(10) {
+        addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
+        FastLED.show();
+    }
+    EVERY_N_MILLIS(5) {
+        static uint8_t loopCount = 0;
+        static bool fadeMode = false;
+        static const uint16_t changed_leds = TREE_LEDS * 0.2;
+        static uint16_t targetLEDIndex[changed_leds];
+        static CRGB colorCurrent = CRGB::Green;
+
+        if (loopCount == 0) {
+            fadeMode = !fadeMode;
+
+            if (fadeMode) {
+                for (int i = 0; i < changed_leds; i++) {
+                    targetLEDIndex[i] = random16(TREE_LED_BEGIN, TREE_LED_END);
+                }
+            }
+        }
+
+        if (fadeMode) {
+            colorCurrent = blend(CRGB::Green, CRGB::Red, loopCount);
+        } else {
+            colorCurrent = blend(CRGB::Red, CRGB::Green, loopCount);
+        }
+
+        set_xmas_tree_body();
+        for (int i = 0; i < changed_leds; i++) {
+            leds[targetLEDIndex[i]] = colorCurrent;
+        }
+        loopCount++;
+        FastLED.show();
+    }
+    FastLED.show();
 }
 
 DEFINE_GRADIENT_PALETTE(white_pink_gp){
@@ -96,9 +131,6 @@ void white() {
     FastLED.show();
     FastLED.delay(1000);
 }
-
-int fadeCount = 0;
-uint8_t fadeMode = 0;
 
 void white_fade() {
     CHSV white_hsv = rgb2hsv_approximate(CRGB::White);
