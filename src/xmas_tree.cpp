@@ -70,6 +70,7 @@ void xmas_christmas_candy() {
         for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
             gColorIndex[i] += 1;
         }
+        FastLED.show();
     }
     FastLED.show();
 }

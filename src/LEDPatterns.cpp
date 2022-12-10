@@ -16,26 +16,14 @@ static uint8_t gHue = 0;                     // rotating "base color" used by ma
 uint8_t loopCount = 0;
 
 LEDPatternList gPatterns = {
-    retweet,                // 0 - リツイート
-    heart,                  // 1 - いいね
-    hashtag,                // 2 - ハッシュタグ
-    xmas_tree_init,         // 3 - ツリー (初期状態)
-    white,                  // 3 - 白(0~9)
-    white_fade,             // 4 - 白点滅
-    pink,                   // 5 - ピンク
-    pink_fade,              // 6 - ピンク点滅
-    white_pink,             // 7 - 白とピンク
-    white_pink_flush,       // 8 - 白とピンク点滅
-    white_pink_blue,        // 9 - 白とピンクと青
-    white_pink_blue_flush,  // 10 - 白とピンクと青点滅
-    rainbowWithGlitter,     // 11 - 虹1
-    confetti,               // 12 - 虹2
-    rainbowPatterns,        // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
-    xmas_colors,            // 15 - クリスマスの色
-    xmas_christmas_candy,   // 16 - クリスマスのキャンディ
-    xmas_snow,              // 17 - クリスマスの雪
-    xmas_autumn,            // 18 - クリスマスの紅葉
-    rgb_pattern,
+    retweet,               // 0 - リツイート
+    heart,                 // 1 - いいね
+    hashtag,               // 2 - ハッシュタグ
+    xmas_tree_init,        // 3 - ツリー (初期状態)
+    xmas_christmas_candy,  // 4 - クリスマスのキャンディ
+    rainbowWithGlitter,    // 11 - 虹1
+    rainbowNoise,          // 13 - 虹2
+    rainbowPatterns,       // 14 - 虹1と虹2を交互に繰り返す(一定数以上用)
 };
 
 void selectPattern(uint8_t patternNumber) {
@@ -283,4 +271,17 @@ void confetti() {
 
     FastLED.delay(1000 / 10);
     EVERY_N_MILLISECONDS(100) { gHue++; }
+}
+
+void rainbowNoise() {
+    uint8_t octaves = 1;
+    uint16_t x = 0;
+    int scale = 100;
+    uint8_t hue_octaves = 1;
+    uint16_t hue_x = 1;
+    int hue_scale = 50;
+    uint16_t ntime = millis() / 3;
+    uint8_t hue_shift = 5;
+    fill_noise16(leds, NUM_LEDS, octaves, x, scale, hue_octaves, hue_x, hue_scale, ntime, hue_shift);
+    FastLED.show();
 }

@@ -50,5 +50,6 @@ extern void white_pink_blue_flush();
 
 extern void rainbowWithGlitter();
 extern void confetti();
+extern void rainbowNoise();
 
 #endif  // INCLUDE_GUARD_LEDPATTERNS_H
