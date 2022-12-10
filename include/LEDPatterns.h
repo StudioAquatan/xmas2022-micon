@@ -37,6 +37,7 @@ extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();
 
 extern void rgb_pattern();
+extern void xmas_tree_init();
 extern void white();
 extern void white_fade();
 extern void pink();

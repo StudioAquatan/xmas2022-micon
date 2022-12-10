@@ -19,6 +19,7 @@ LEDPatternList gPatterns = {
     retweet,                // 0 - リツイート
     heart,                  // 1 - いいね
     hashtag,                // 2 - ハッシュタグ
+    xmas_tree_init,         // 3 - ツリー (初期状態)
     white,                  // 3 - 白(0~9)
     white_fade,             // 4 - 白点滅
     pink,                   // 5 - ピンク
@@ -30,7 +31,6 @@ LEDPatternList gPatterns = {
     rainbowWithGlitter,     // 11 - 虹1
     confetti,               // 12 - 虹2
     rainbowPatterns,        // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
-    xmas_tree,              // 14 - クリスマス
     xmas_colors,            // 15 - クリスマスの色
     xmas_christmas_candy,   // 16 - クリスマスのキャンディ
     xmas_snow,              // 17 - クリスマスの雪
@@ -52,18 +52,11 @@ void selectPattern(uint8_t patternNumber) {
     gPatterns[ranged]();
 }
 
-uint8_t gCurrentRainbowPatternNumber = 0;
-LEDPatternList gRainbowPatterns = {rainbowWithGlitter, confetti};
-void rainbowPatterns() {
-    gRainbowPatterns[gCurrentRainbowPatternNumber]();
-    EVERY_N_SECONDS(60) {
-        for (int i = 0; i < 100; i++) {
-            fadeToBlackBy(leds, NUM_LEDS, 10);
-            FastLED.delay(10);
-            FastLED.show();
-        }
-        gCurrentRainbowPatternNumber = (gCurrentRainbowPatternNumber + 1) % ARRAY_SIZE(gRainbowPatterns);
-    }
+void xmas_tree_init() {
+    set_xmas_tree_star();
+    addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
+    set_xmas_tree_body();
+    FastLED.delay(10);
 }
 
 DEFINE_GRADIENT_PALETTE(white_pink_gp){
@@ -225,6 +218,20 @@ void white_pink_blue_flush() {
     leds[pos] = ColorFromPalette(gWhitePinkBluePalette, random8(), 255, LINEARBLEND);
     FastLED.delay(1000 / 10);
     FastLED.show();
+}
+
+uint8_t gCurrentRainbowPatternNumber = 0;
+LEDPatternList gRainbowPatterns = {rainbowWithGlitter, confetti};
+void rainbowPatterns() {
+    gRainbowPatterns[gCurrentRainbowPatternNumber]();
+    EVERY_N_SECONDS(60) {
+        for (int i = 0; i < 100; i++) {
+            fadeToBlackBy(leds, NUM_LEDS, 10);
+            FastLED.delay(10);
+            FastLED.show();
+        }
+        gCurrentRainbowPatternNumber = (gCurrentRainbowPatternNumber + 1) % ARRAY_SIZE(gRainbowPatterns);
+    }
 }
 
 void rainbowWithGlitter() {
