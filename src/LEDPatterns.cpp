@@ -15,6 +15,26 @@ volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is
 static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
 static uint8_t loopCount = 0;
 
+void rgb_pattern() {
+    EVERY_N_SECONDS(1) {
+        loopCount++;
+        for (int i = 0; i < NUM_LEDS; i++) {
+            switch (loopCount % 3) {
+                case 0:
+                    leds[i] = CRGB::Red;
+                    break;
+                case 1:
+                    leds[i] = CRGB::Green;
+                    break;
+                case 2:
+                    leds[i] = CRGB::Blue;
+                    break;
+            }
+        }
+    }
+    FastLED.show();
+}
+
 LEDPatternList gPatterns = {
     retweet,                // 0 - リツイート
     heart,                  // 1 - いいね
@@ -35,6 +55,7 @@ LEDPatternList gPatterns = {
     xmas_christmas_candy,   // 16 - クリスマスのキャンディ
     xmas_snow,              // 17 - クリスマスの雪
     xmas_autumn,            // 18 - クリスマスの紅葉
+    rgb_pattern,
 };
 
 void selectPattern(uint8_t patternNumber) {
