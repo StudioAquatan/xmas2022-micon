@@ -9,6 +9,7 @@
 FASTLED_USING_NAMESPACE
 
 CRGB leds[NUM_LEDS];
+uint8_t gColorIndex[NUM_LEDS];
 
 volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
 static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
@@ -31,8 +32,9 @@ LEDPatternList gPatterns = {
     rainbowPatterns,        // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
     xmas_tree,              // 14 - クリスマス
     xmas_colors,            // 15 - クリスマスの色
-    xmas_snow,              // 16 - クリスマスの雪
-    xmas_autumn,            // 17 - クリスマスの紅葉
+    xmas_christmas_candy,   // 16 - クリスマスのキャンディ
+    xmas_snow,              // 17 - クリスマスの雪
+    xmas_autumn,            // 18 - クリスマスの紅葉
 };
 
 void selectPattern(uint8_t patternNumber) {

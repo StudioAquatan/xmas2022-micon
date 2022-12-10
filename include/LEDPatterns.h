@@ -13,8 +13,8 @@
 
 #ifdef AWS_IOT_THING_ESP32Sample
 #define COLOR_ORDER RGB
-#define NUM_LEDS 100
-#define STAR_LEDS 20
+#define NUM_LEDS 200
+#define STAR_LEDS 40
 #define TREE_LEDS (NUM_LEDS - STAR_LEDS)
 #define TREE_LED_BEGIN 0
 #define TREE_LED_END TREE_LEDS
@@ -31,6 +31,7 @@ extern volatile uint8_t gCurrentPatternNumber;
 // List of patterns to cycle through.  Each is defined as a separate function.
 typedef void (*LEDPatternList[])();
 extern LEDPatternList gPatterns;
+extern uint8_t gColorIndex[NUM_LEDS];
 
 extern void selectPattern(uint8_t patternNumber);
 extern void rainbowPatterns();

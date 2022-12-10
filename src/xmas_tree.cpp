@@ -47,6 +47,34 @@ void xmas_colors() {
     FastLED.show();
 }
 
+DEFINE_GRADIENT_PALETTE(christmas_candy_gp){
+    0, 255, 255, 255,
+    25, 255, 0, 0,
+    51, 255, 255, 255,
+    76, 0, 55, 0,
+    102, 255, 255, 255,
+    127, 255, 0, 0,
+    153, 255, 255, 255,
+    178, 0, 55, 0,
+    204, 255, 255, 255,
+    229, 255, 0, 0,
+    255, 255, 255, 255};
+
+CRGBPalette16 christmas_candy = christmas_candy_gp;
+
+void xmas_christmas_candy() {
+    set_xmas_tree_star();
+    for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+        leds[i] = ColorFromPalette(christmas_candy, gColorIndex[i], BRIGHTNESS);
+    }
+    EVERY_N_MILLISECONDS(100) {
+        for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+            gColorIndex[i] += 1;
+        }
+    }
+    FastLED.delay(1);
+}
+
 void xmas_snow() {
     set_xmas_tree_star();
     EVERY_N_SECONDS(4) {

@@ -39,6 +39,10 @@ void setup() {
     setupAWSIoT();
     publishCurrentPatternNumber();
 
+    for (int i = 0; i < NUM_LEDS; i++) {
+        gColorIndex[i] = random8();
+    }
+
     xTaskCreatePinnedToCore(
         mqtt_main_loop,
         "mqtt_main_loop",
