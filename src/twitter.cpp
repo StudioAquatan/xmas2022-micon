@@ -43,22 +43,70 @@ void retweet() {
 }
 
 void heart() {
-    uint8_t sinBeat1 = beatsin8(30, 0, NUM_LEDS - 1, 0, 0);
-    uint8_t sinBeat2 = beatsin8(30, 0, NUM_LEDS - 1, 0, 127);
+    EVERY_N_MILLISECONDS(2) {
+        static uint8_t fadeToBlackScale = 3;
 
-    leds[sinBeat1] = CRGB::DeepPink;
-    leds[sinBeat2] = CRGB::DeepPink;
+        uint8_t sinBeat1 = beatsin8(30, 0, STAR_LEDS - 1, 0, 0);
+        leds[STAR_LED_BEGIN + sinBeat1] = CRGB::DeepPink;
 
-    fadeToBlackBy(leds, NUM_LEDS, 5);
-
-    EVERY_N_MILLISECONDS(10) {
-        addColorGlitter(30, CRGB::Blue);
-        addColorGlitter(30, CRGB::Green);
-        addColorGlitter(30, CRGB::Orange);
-        addColorGlitter(30, CRGB::Purple);
+        for (uint16_t i = STAR_LED_BEGIN; i < STAR_LED_END; ++i) {
+            leds[i].nscale8(255 - fadeToBlackScale);
+        }
+        FastLED.show();
     }
 
-    FastLED.delay(1);
+    EVERY_N_MILLISECONDS(10) {
+        addColorGlitter(30, CRGB::Blue, STAR_LED_BEGIN, STAR_LED_END);
+        addColorGlitter(30, CRGB::Green, STAR_LED_BEGIN, STAR_LED_END);
+        addColorGlitter(30, CRGB::Orange, STAR_LED_BEGIN, STAR_LED_END);
+        addColorGlitter(30, CRGB::Purple, STAR_LED_BEGIN, STAR_LED_END);
+        FastLED.show();
+    }
+
+    EVERY_N_MILLIS(1000) {
+        static int changedLeds = TREE_LEDS * 0.2;
+
+        for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+            CHSV hsv = rgb2hsv_approximate(CRGB::DeepPink);
+            hsv.v = random8(100, 255);
+            leds[i] = hsv;
+        }
+
+        for (int i = 0; i < changedLeds; i++) {
+            uint8_t pos = random8(TREE_LED_BEGIN, TREE_LED_END);
+            uint8_t color = random8(0, 4);
+            switch (color) {
+                case 0:
+                    leds[pos] = CRGB::Blue;
+                    break;
+                case 1:
+                    leds[pos] = CRGB::Green;
+                    break;
+                case 2:
+                    leds[pos] = CRGB::Orange;
+                    break;
+                case 3:
+                    leds[pos] = CRGB::Purple;
+                    break;
+            }
+        }
+        FastLED.show();
+    }
+
+    EVERY_N_MILLIS(2) {
+        static uint8_t fadeToBlackScale = 20;
+        for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
+            CRGB blue = CRGB::Blue;
+            CRGB green = CRGB::Green;
+            CRGB orange = CRGB::Orange;
+            CRGB purple = CRGB::Purple;
+            if (leds[i] != blue && leds[i] != green && leds[i] != orange && leds[i] != purple) {
+                leds[i].nscale8(255 - fadeToBlackScale);
+            }
+        }
+        FastLED.show();
+    }
+
     FastLED.show();
 }
 
