@@ -12,7 +12,6 @@ CRGB leds[NUM_LEDS];
 uint8_t gColorIndex[NUM_LEDS];
 
 volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
-static uint8_t gHue = 0;                     // rotating "base color" used by many of the patterns
 uint8_t loopCount = 0;
 
 LEDPatternList gPatterns = {
@@ -23,7 +22,8 @@ LEDPatternList gPatterns = {
     xmas_christmas_candy,  // 4 - クリスマスのキャンディ
     xmas_colors,           // 5 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
-    rainbowNoise,          // 13 - 虹2
+    confetti,              // 13 - 虹2
+    rainbowNoise,          // 13 - 虹3
     rainbowPatterns,       // 14 - 虹1と虹2を交互に繰り返す(一定数以上用)
 };
 
@@ -116,7 +116,7 @@ void rgb_pattern() {
 }
 
 uint8_t gCurrentRainbowPatternNumber = 0;
-LEDPatternList gRainbowPatterns = {rainbowWithGlitter, confetti};
+LEDPatternList gRainbowPatterns = {rainbowWithGlitter, confetti, rainbowNoise};
 void rainbowPatterns() {
     gRainbowPatterns[gCurrentRainbowPatternNumber]();
     EVERY_N_SECONDS(60) {
@@ -131,21 +131,32 @@ void rainbowPatterns() {
 
 void rainbowWithGlitter() {
     // built-in FastLED rainbow, plus some random sparkly glitter
-    fill_rainbow(leds, NUM_LEDS, gHue, 1);
-    addGlitter(30);
-    EVERY_N_MILLISECONDS(100) { gHue++; }
-    FastLED.delay(10);
+    EVERY_N_MILLISECONDS(1) {
+        static uint8_t gHue = 0;
+        fill_rainbow(leds, NUM_LEDS, gHue, 1);
+        addGlitter(30);
+        gHue++;
+        FastLED.show();
+    }
+    FastLED.show();
 }
 
 void confetti() {
-    // random colored speckles that blink in and fade smoothly
-    loopCount++;
-    fadeToBlackBy(leds, NUM_LEDS, 1);
-    int pos = random16(NUM_LEDS);
-    leds[pos] += CHSV(gHue + random8(64), 200, 255);
+    EVERY_N_MILLISECONDS(1) {
+        static uint8_t gHue = 0;
+        int pos = random16(NUM_LEDS);
+        for (int i = 0; i < 3; i++) {
+            leds[pos] += CHSV(gHue + random8(64), 200, 190);
+        }
+        gHue++;
+        FastLED.show();
+    }
 
-    FastLED.delay(1000 / 10);
-    EVERY_N_MILLISECONDS(100) { gHue++; }
+    EVERY_N_MILLISECONDS(50) {
+        fadeToBlackBy(leds, NUM_LEDS, 1);
+        FastLED.show();
+    }
+    FastLED.show();
 }
 
 void rainbowNoise() {
