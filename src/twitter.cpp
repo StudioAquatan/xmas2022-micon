@@ -123,15 +123,16 @@ DEFINE_GRADIENT_PALETTE(bhw2_grrrrr_gp){
 CRGBPalette16 bhw2_grrrrr = bhw2_grrrrr_gp;
 
 void hashtag() {
-    EVERY_N_MILLIS(200) {
+    EVERY_N_MILLIS(10) {
         static int paletteIndex = 0;
 
         uint8_t colorIndex = paletteIndex;
         for (uint16_t i = STAR_LED_BEGIN; i < STAR_LED_END; ++i) {
             leds[i] = ColorFromPalette(bhw2_grrrrr, colorIndex, BRIGHTNESS, LINEARBLEND);
             colorIndex += 255 / STAR_LEDS;
-            paletteIndex++;
+            colorIndex++;
         }
+        paletteIndex++;
         FastLED.show();
     }
     EVERY_N_MILLIS(50) {
