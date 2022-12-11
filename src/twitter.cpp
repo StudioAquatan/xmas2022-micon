@@ -110,31 +110,72 @@ void heart() {
     FastLED.show();
 }
 
-CRGBPalette16 purplePalette = CRGBPalette16(
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
+DEFINE_GRADIENT_PALETTE(bhw2_grrrrr_gp){
+    0, 184, 15, 155,
+    35, 78, 46, 168,
+    84, 65, 169, 230,
+    130, 9, 127, 186,
+    163, 77, 182, 109,
+    191, 242, 246, 55,
+    216, 142, 128, 103,
+    255, 72, 50, 168};
 
-    CRGB::Magenta,
-    CRGB::Magenta,
-    CRGB::Linen,
-    CRGB::Linen,
-
-    CRGB::Magenta,
-    CRGB::Magenta,
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-
-    CRGB::DarkViolet,
-    CRGB::DarkViolet,
-    CRGB::Linen,
-    CRGB::Linen);
+CRGBPalette16 bhw2_grrrrr = bhw2_grrrrr_gp;
 
 void hashtag() {
-    fill_palette(leds, NUM_LEDS, loopCount, 255 / NUM_LEDS, purplePalette, 255, LINEARBLEND);
+    EVERY_N_MILLIS(200) {
+        static int paletteIndex = 0;
 
-    EVERY_N_MILLISECONDS(10) {
-        loopCount++;
+        uint8_t colorIndex = paletteIndex;
+        for (uint16_t i = STAR_LED_BEGIN; i < STAR_LED_END; ++i) {
+            leds[i] = ColorFromPalette(bhw2_grrrrr, colorIndex, BRIGHTNESS, LINEARBLEND);
+            colorIndex += 255 / STAR_LEDS;
+            paletteIndex++;
+        }
+        FastLED.show();
     }
+    EVERY_N_MILLIS(50) {
+        static uint8_t phase = 0;
+        static int loopCount = TREE_LED_END;
+
+        if (phase == 0) {
+            for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+                leds[i] = CRGB::Black;
+            }
+            phase = 1;
+        } else if (phase == 1) {
+            leds[loopCount] = ColorFromPalette(bhw2_grrrrr, random8(0, 255), BRIGHTNESS);
+
+            if (loopCount == TREE_LED_BEGIN) {
+                phase = 2;
+                loopCount = 0;
+            } else {
+                loopCount--;
+            }
+        } else if (phase == 2) {
+            if (loopCount != 10) {
+                loopCount++;
+            } else {
+                loopCount = 0;
+                for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+                    leds[i] = ColorFromPalette(bhw2_grrrrr, random8(0, 255), BRIGHTNESS);
+                }
+                if (random8(0, 100) > 80) {
+                    phase = 3;
+                }
+            }
+        } else if (phase == 3) {
+            if (loopCount != 10) {
+                loopCount++;
+            } else {
+                loopCount = TREE_LED_END;
+                for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+                    leds[i] = CRGB::Black;
+                }
+                phase = 0;
+            }
+        }
+        FastLED.show();
+    }
+    FastLED.show();
 }
