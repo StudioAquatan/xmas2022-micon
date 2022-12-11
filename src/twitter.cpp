@@ -161,7 +161,7 @@ void hashtag() {
                 for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
                     leds[i] = ColorFromPalette(bhw2_grrrrr, random8(0, 255), BRIGHTNESS);
                 }
-                if (random8(0, 100) > 80) {
+                if (random8(0, 100) > 95) {
                     phase = 3;
                 }
             }
