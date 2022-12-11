@@ -21,6 +21,7 @@ LEDPatternList gPatterns = {
     hashtag,               // 2 - ハッシュタグ
     xmas_tree_init,        // 3 - ツリー (初期状態)
     xmas_christmas_candy,  // 4 - クリスマスのキャンディ
+    xmas_colors,           // 5 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
     rainbowNoise,          // 13 - 虹2
     rainbowPatterns,       // 14 - 虹1と虹2を交互に繰り返す(一定数以上用)
