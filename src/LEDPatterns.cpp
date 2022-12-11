@@ -18,10 +18,11 @@ LEDPatternList gPatterns = {
     heart,                 // 1 - いいね
     hashtag,               // 2 - ハッシュタグ
     xmas_tree_init,        // 3 - ツリー (初期状態)
-    xmas_tree_red_flush,   // 4 - ツリー (赤色でフラッシュ)
-    xmas_christmas_candy,  // 5 - クリスマスのキャンディ
-    xmas_colors,           // 6 - クリスマスの色
-    rgb_pattern,           // 7 - RGB
+    xmas_green_fade,       // 4 - ツリー (緑色でフェードイン)
+    xmas_tree_red_flush,   // 5 - ツリー (赤色でフラッシュ)
+    xmas_christmas_candy,  // 6 - クリスマスのキャンディ
+    rgb_pattern,           // 8 - RGB
+    xmas_colors,           // 9 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
     rainbowNoise,          // 12 - 虹2
     rainbowPatterns,       // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
@@ -44,6 +45,42 @@ void selectPattern(uint8_t patternNumber) {
 void xmas_tree_init() {
     set_xmas_tree_star();
     set_xmas_tree_body();
+    FastLED.show();
+}
+
+void xmas_green_fade() {
+    EVERY_N_MILLIS(5) {
+        static uint8_t fadeCount = 0;
+        static uint8_t fadeMode = 0;
+        CHSV green_hsv = rgb2hsv_approximate(CRGB::Green);
+
+        if (fadeMode == 0) {
+            // フェードイン
+            for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+                leds[i] = CHSV(green_hsv.h, green_hsv.s, fadeCount % 256);
+            }
+            if (fadeCount % 256 == 255) {
+                fadeMode = 1;
+            }
+        } else if (fadeMode == 1) {
+            // 3秒待機する
+            if (fadeCount % (255 + 600) == 0) {
+                fadeMode = 2;
+                fadeCount = 255;
+            }
+        } else {
+            // フェードアウト
+            for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+                leds[i] = CHSV(green_hsv.h, green_hsv.s, 255 - (fadeCount % 256));
+            }
+            if (255 - (fadeCount % 256) == 0) {
+                fadeMode = 0;
+                fadeCount = 0;
+            }
+        }
+        fadeCount++;
+        FastLED.show();
+    }
     FastLED.show();
 }
 
