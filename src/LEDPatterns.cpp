@@ -12,7 +12,6 @@ CRGB leds[NUM_LEDS];
 uint8_t gColorIndex[NUM_LEDS];
 
 volatile uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
-uint8_t loopCount = 0;
 
 LEDPatternList gPatterns = {
     retweet,               // 0 - リツイート
@@ -22,9 +21,10 @@ LEDPatternList gPatterns = {
     xmas_tree_red_flush,   // 4 - ツリー (赤色でフラッシュ)
     xmas_christmas_candy,  // 5 - クリスマスのキャンディ
     xmas_colors,           // 6 - クリスマスの色
+    rgb_pattern,           // 7 - RGB
     rainbowWithGlitter,    // 11 - 虹1
-    rainbowNoise,          // 13 - 虹3
-    rainbowPatterns,       // 14 - 虹1と虹2を交互に繰り返す(一定数以上用)
+    rainbowNoise,          // 12 - 虹2
+    rainbowPatterns,       // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
 };
 
 void selectPattern(uint8_t patternNumber) {
@@ -44,19 +44,11 @@ void selectPattern(uint8_t patternNumber) {
 void xmas_tree_init() {
     set_xmas_tree_star();
     set_xmas_tree_body();
-    EVERY_N_MILLIS(10) {
-        addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
-        FastLED.show();
-    }
     FastLED.show();
 }
 
 void xmas_tree_red_flush() {
     set_xmas_tree_star();
-    EVERY_N_MILLIS(10) {
-        addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
-        FastLED.show();
-    }
     EVERY_N_MILLIS(5) {
         static uint8_t loopCount = 0;
         static bool fadeMode = false;
@@ -90,11 +82,46 @@ void xmas_tree_red_flush() {
     FastLED.show();
 }
 
+DEFINE_GRADIENT_PALETTE(christmas_candy_gp){
+    0, 255, 255, 255,
+    25, 255, 0, 0,
+    51, 255, 255, 255,
+    76, 0, 55, 0,
+    102, 255, 255, 255,
+    127, 255, 0, 0,
+    153, 255, 255, 255,
+    178, 0, 55, 0,
+    204, 255, 255, 255,
+    229, 255, 0, 0,
+    255, 255, 255, 255};
+
+CRGBPalette16 christmas_candy = christmas_candy_gp;
+
+void xmas_christmas_candy() {
+    set_xmas_tree_star();
+    for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+        leds[i] = ColorFromPalette(christmas_candy, gColorIndex[i], BRIGHTNESS);
+    }
+    EVERY_N_MILLISECONDS(100) {
+        for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+            gColorIndex[i] += 1;
+        }
+        FastLED.show();
+    }
+    FastLED.show();
+}
+
 void rgb_pattern() {
-    EVERY_N_SECONDS(1) {
+    set_xmas_tree_star();
+    EVERY_N_MILLISECONDS(1) {
+        static uint16_t loopCount = 0;
+        static uint8_t colorIndex = 0;
         loopCount++;
-        for (int i = 0; i < NUM_LEDS; i++) {
-            switch (loopCount % 3) {
+        if (loopCount % 200 == 0) {
+            colorIndex = (colorIndex + 1) % 3;
+        }
+        for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
+            switch (colorIndex) {
                 case 0:
                     leds[i] = CRGB::Red;
                     break;
@@ -106,6 +133,10 @@ void rgb_pattern() {
                     break;
             }
         }
+        addGlitter(30, TREE_LED_BEGIN, TREE_LED_END);
+        addGlitter(30, TREE_LED_BEGIN, TREE_LED_END);
+        addGlitter(30, TREE_LED_BEGIN, TREE_LED_END);
+        FastLED.show();
     }
     FastLED.show();
 }
