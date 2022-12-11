@@ -35,13 +35,13 @@ void setup() {
     Serial.printf("otaReplyPublishTopic=%s\n", otaReplyPublishTopic);
     Serial.printf("otaRequestSubscribeTopic=%s\n", otaRequestSubscribeTopic);
 
-    setupWiFi();
-    setupAWSIoT();
-    publishCurrentPatternNumber();
-
     for (int i = 0; i < NUM_LEDS; i++) {
         gColorIndex[i] = random8();
     }
+
+    setupWiFi();
+    setupAWSIoT();
+    publishCurrentPatternNumber();
 
     xTaskCreatePinnedToCore(
         mqtt_main_loop,
