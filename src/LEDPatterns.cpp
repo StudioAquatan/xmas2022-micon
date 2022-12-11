@@ -21,9 +21,10 @@ LEDPatternList gPatterns = {
     xmas_green_fade,       // 4 - ツリー (緑色でフェードイン)
     xmas_tree_red_flush,   // 5 - ツリー (赤色でフラッシュ)
     xmas_christmas_candy,  // 6 - クリスマスのキャンディ
-    xmas_white_christmas,  // 7 - ホワイトクリスマス
-    rgb_pattern,           // 8 - RGB
-    xmas_colors,           // 9 - クリスマスの色
+    purplefly_pattern,     // 7 - 紫色
+    xmas_white_christmas,  // 8 - ホワイトクリスマス
+    rgb_pattern,           // 9 - RGB
+    xmas_colors,           // 10 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
     rainbowNoise,          // 12 - 虹2
     rainbowPatterns,       // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
@@ -144,6 +145,31 @@ void xmas_christmas_candy() {
         for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
             gColorIndex[i] += 1;
         }
+        FastLED.show();
+    }
+    FastLED.show();
+}
+
+DEFINE_GRADIENT_PALETTE(purplefly_gp){
+    0, 0, 0, 0,
+    63, 239, 0, 122,
+    191, 252, 255, 78,
+    255, 0, 0, 0};
+
+CRGBPalette16 purplefly = purplefly_gp;
+
+void purplefly_pattern() {
+    set_xmas_tree_star();
+    EVERY_N_MILLIS(10) {
+        static int paletteIndex = 0;
+
+        uint8_t colorIndex = paletteIndex;
+        for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
+            leds[i] = ColorFromPalette(purplefly, colorIndex, BRIGHTNESS, LINEARBLEND);
+            colorIndex += 255 / TREE_LEDS;
+            colorIndex++;
+        }
+        paletteIndex++;
         FastLED.show();
     }
     FastLED.show();
