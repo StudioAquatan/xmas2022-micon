@@ -27,7 +27,7 @@ LEDPatternList gPatterns = {
     xmas_colors,           // 10 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
     rainbowNoise,          // 12 - 虹2
-    rainbowPatterns,       // 13 - 虹1と虹2を交互に繰り返す(一定数以上用)
+    selectionPatterns,     // 13 - 選択されたパターンを繰り返す
 };
 
 void selectPattern(uint8_t patternNumber) {
@@ -244,17 +244,26 @@ void rgb_pattern() {
     FastLED.show();
 }
 
-uint8_t gCurrentRainbowPatternNumber = 0;
-LEDPatternList gRainbowPatterns = {rainbowWithGlitter, rainbowNoise};
-void rainbowPatterns() {
-    gRainbowPatterns[gCurrentRainbowPatternNumber]();
-    EVERY_N_SECONDS(60) {
+uint8_t gCurrentSelectionPatternNumber = 0;
+LEDPatternList gSelectionPatterns = {
+    xmas_tree_red_flush,   // 5 - ツリー (赤色でフラッシュ)
+    xmas_christmas_candy,  // 6 - クリスマスのキャンディ
+    purplefly_pattern,     // 7 - 紫色
+    xmas_white_christmas,  // 8 - ホワイトクリスマス
+    rgb_pattern,           // 9 - RGB
+    xmas_colors,           // 10 - クリスマスの色
+    rainbowWithGlitter,    // 11 - 虹1
+    rainbowNoise,          // 12 - 虹2
+};
+void selectionPatterns() {
+    gSelectionPatterns[gCurrentSelectionPatternNumber]();
+    EVERY_N_SECONDS(10) {
         for (int i = 0; i < 100; i++) {
             fadeToBlackBy(leds, NUM_LEDS, 10);
             FastLED.delay(10);
             FastLED.show();
         }
-        gCurrentRainbowPatternNumber = (gCurrentRainbowPatternNumber + 1) % ARRAY_SIZE(gRainbowPatterns);
+        gCurrentSelectionPatternNumber = random8(ARRAY_SIZE(gSelectionPatterns));
     }
 }
 

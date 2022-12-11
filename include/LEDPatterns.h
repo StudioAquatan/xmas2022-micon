@@ -45,7 +45,7 @@ extern LEDPatternList gPatterns;
 extern uint8_t gColorIndex[NUM_LEDS];
 
 extern void selectPattern(uint8_t patternNumber);
-extern void rainbowPatterns();
+extern void selectionPatterns();
 
 extern void rgb_pattern();
 extern void xmas_tree_init();
