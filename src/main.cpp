@@ -96,7 +96,7 @@ void mqtt_main_loop(void *arg) {
             }
         }
 
-        delay(1000);
+        delay(10);
     }
 }
 
