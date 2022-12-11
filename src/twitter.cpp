@@ -6,16 +6,39 @@
 static uint8_t loopCount = 0;
 
 void retweet() {
-    uint8_t pos1 = map(beat8(40, 0), 0, 255, 0, NUM_LEDS - 1);
-    uint8_t pos2 = map(beat8(40, 333), 0, 255, 0, NUM_LEDS - 1);
-    uint8_t pos3 = map(beat8(40, 666), 0, 255, 0, NUM_LEDS - 1);
-    leds[pos1] = CRGB::Green;
-    leds[pos2] = CRGB::Yellow;
-    leds[pos3] = CRGB::Green;
+    EVERY_N_MILLISECONDS(2) {
+        static uint8_t fadeToBlackScale = 3;
 
-    fadeToBlackBy(leds, NUM_LEDS, 3);
+        uint8_t pos1 = map(beat8(40, 0), 0, 255, 0, STAR_LEDS - 1);
+        leds[STAR_LED_BEGIN + pos1] = CRGB::Yellow;
 
-    FastLED.delay(2);
+        for (uint16_t i = STAR_LED_BEGIN; i < STAR_LED_END; ++i) {
+            leds[i].nscale8(255 - fadeToBlackScale);
+        }
+        FastLED.show();
+    }
+
+    EVERY_N_MILLIS(100) {
+        static int changedLeds = TREE_LEDS * 0.2;
+
+        for (int i = 0; i < changedLeds / 2; i++) {
+            uint8_t pos = random8(TREE_LED_BEGIN, TREE_LED_END);
+            leds[pos] = CRGB::Yellow;
+        }
+        for (int i = 0; i < changedLeds / 2; i++) {
+            uint8_t pos = random8(TREE_LED_BEGIN, TREE_LED_END);
+            leds[pos] = CRGB::Green;
+        }
+        FastLED.show();
+    }
+
+    EVERY_N_MILLIS(2) {
+        static uint8_t fadeToBlackScale = 20;
+        for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
+            leds[i].nscale8(255 - fadeToBlackScale);
+        }
+        FastLED.show();
+    }
     FastLED.show();
 }
 
