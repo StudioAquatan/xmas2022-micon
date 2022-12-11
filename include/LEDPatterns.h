@@ -49,15 +49,7 @@ extern void rainbowPatterns();
 
 extern void rgb_pattern();
 extern void xmas_tree_init();
-extern void white();
-extern void white_fade();
-extern void pink();
-extern void pink_fade();
-extern void white_pink();
-extern void white_pink_blue();
-
-extern void white_pink_flush();
-extern void white_pink_blue_flush();
+extern void xmas_tree_red_flush();
 
 extern void rainbowWithGlitter();
 extern void confetti();

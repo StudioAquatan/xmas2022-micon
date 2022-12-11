@@ -19,10 +19,10 @@ LEDPatternList gPatterns = {
     heart,                 // 1 - いいね
     hashtag,               // 2 - ハッシュタグ
     xmas_tree_init,        // 3 - ツリー (初期状態)
-    xmas_christmas_candy,  // 4 - クリスマスのキャンディ
-    xmas_colors,           // 5 - クリスマスの色
+    xmas_tree_red_flush,   // 4 - ツリー (赤色でフラッシュ)
+    xmas_christmas_candy,  // 5 - クリスマスのキャンディ
+    xmas_colors,           // 6 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
-    confetti,              // 13 - 虹2
     rainbowNoise,          // 13 - 虹3
     rainbowPatterns,       // 14 - 虹1と虹2を交互に繰り返す(一定数以上用)
 };
@@ -41,10 +41,17 @@ void selectPattern(uint8_t patternNumber) {
     gPatterns[ranged]();
 }
 
-bool fadeMode = false;
-int fadeCount = 0;
-
 void xmas_tree_init() {
+    set_xmas_tree_star();
+    set_xmas_tree_body();
+    EVERY_N_MILLIS(10) {
+        addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
+        FastLED.show();
+    }
+    FastLED.show();
+}
+
+void xmas_tree_red_flush() {
     set_xmas_tree_star();
     EVERY_N_MILLIS(10) {
         addColorGlitter(30, CRGB::Red, STAR_LED_BEGIN, STAR_LED_END);
@@ -83,18 +90,6 @@ void xmas_tree_init() {
     FastLED.show();
 }
 
-DEFINE_GRADIENT_PALETTE(white_pink_gp){
-    0, CRGB(CRGB::White).r, CRGB(CRGB::White).g, CRGB(CRGB::White).b,
-    255, CRGB(CRGB::DeepPink).r, CRGB(CRGB::DeepPink).g, CRGB(CRGB::DeepPink).b};
-
-DEFINE_GRADIENT_PALETTE(white_pink_blue_gp){
-    0, CRGB(CRGB::White).r, CRGB(CRGB::White).g, CRGB(CRGB::White).b,
-    128, CRGB(CRGB::DeepPink).r, CRGB(CRGB::DeepPink).g, CRGB(CRGB::DeepPink).b,
-    255, CRGB(CRGB::Blue).r, CRGB(CRGB::Blue).g, CRGB(CRGB::Blue).b};
-
-CRGBPalette16 gWhitePinkPalette = white_pink_gp;
-CRGBPalette16 gWhitePinkBluePalette = white_pink_blue_gp;
-
 void rgb_pattern() {
     EVERY_N_SECONDS(1) {
         loopCount++;
@@ -116,7 +111,7 @@ void rgb_pattern() {
 }
 
 uint8_t gCurrentRainbowPatternNumber = 0;
-LEDPatternList gRainbowPatterns = {rainbowWithGlitter, confetti, rainbowNoise};
+LEDPatternList gRainbowPatterns = {rainbowWithGlitter, rainbowNoise};
 void rainbowPatterns() {
     gRainbowPatterns[gCurrentRainbowPatternNumber]();
     EVERY_N_SECONDS(60) {
