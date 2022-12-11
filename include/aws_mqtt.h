@@ -9,6 +9,7 @@
 extern MQTTClient mqttClient;
 
 extern void printDeserializationError(const DeserializationError &error);
+extern void setupSubscribeTopics();
 extern void setupAWSIoT();
 extern void publishCurrentPatternNumber();
 extern void publishReplyOTARequest(const String &message);

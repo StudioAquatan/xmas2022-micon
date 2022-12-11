@@ -34,6 +34,11 @@ void printDeserializationError(const DeserializationError &error) {
     }
 }
 
+void setupSubscribeTopics() {
+    mqttClient.subscribe(deviceShadowSubscribeTopic);
+    mqttClient.subscribe(otaRequestSubscribeTopic);
+}
+
 void setupAWSIoT() {
     // Configure WiFiClientSecure to use the AWS IoT device credentials
     wifiClientMQTT.setCACert(AWS_CERT_CA);
@@ -59,10 +64,7 @@ void setupAWSIoT() {
         return;
     }
 
-    // Subscribe to a topic
-    mqttClient.subscribe(deviceShadowSubscribeTopic);
-    mqttClient.subscribe(otaRequestSubscribeTopic);
-
+    setupSubscribeTopics();
     Serial.println("AWS IoT Connected!");
 }
 
