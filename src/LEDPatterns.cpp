@@ -21,6 +21,7 @@ LEDPatternList gPatterns = {
     xmas_green_fade,       // 4 - ツリー (緑色でフェードイン)
     xmas_tree_red_flush,   // 5 - ツリー (赤色でフラッシュ)
     xmas_christmas_candy,  // 6 - クリスマスのキャンディ
+    xmas_white_christmas,  // 7 - ホワイトクリスマス
     rgb_pattern,           // 8 - RGB
     xmas_colors,           // 9 - クリスマスの色
     rainbowWithGlitter,    // 11 - 虹1
@@ -143,6 +144,45 @@ void xmas_christmas_candy() {
         for (int i = TREE_LED_BEGIN; i < TREE_LED_END; i++) {
             gColorIndex[i] += 1;
         }
+        FastLED.show();
+    }
+    FastLED.show();
+}
+
+DEFINE_GRADIENT_PALETTE(white_christmas_gp){
+    0, 117, 97, 49,
+    12, 117, 97, 49,
+    12, 26, 173, 106,
+    25, 26, 173, 106,
+    25, 10, 77, 164,
+    63, 10, 77, 164,
+    63, 0, 21, 85,
+    102, 0, 21, 85,
+    102, 53, 86, 135,
+    127, 53, 86, 135,
+    127, 26, 31, 65,
+    153, 26, 31, 65,
+    153, 61, 31, 96,
+    191, 61, 31, 96,
+    191, 82, 97, 85,
+    229, 82, 97, 85,
+    229, 255, 255, 255,
+    255, 255, 255, 255};
+
+CRGBPalette16 white_christmas = white_christmas_gp;
+
+void xmas_white_christmas() {
+    set_xmas_tree_star();
+    EVERY_N_MILLIS(10) {
+        static int paletteIndex = 0;
+
+        uint8_t colorIndex = paletteIndex;
+        for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
+            leds[i] = ColorFromPalette(white_christmas, colorIndex, BRIGHTNESS, LINEARBLEND);
+            colorIndex += 255 / TREE_LEDS;
+            colorIndex++;
+        }
+        paletteIndex++;
         FastLED.show();
     }
     FastLED.show();

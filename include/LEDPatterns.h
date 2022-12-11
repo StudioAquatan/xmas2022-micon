@@ -51,6 +51,7 @@ extern void rgb_pattern();
 extern void xmas_tree_init();
 extern void xmas_green_fade();
 extern void xmas_tree_red_flush();
+extern void xmas_white_christmas();
 
 extern void rainbowWithGlitter();
 extern void confetti();
