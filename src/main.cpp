@@ -83,6 +83,9 @@ void mqtt_main_loop(void *arg) {
                 Serial.println("AWS IoT Timeout!");
                 return;
             }
+
+            setupSubscribeTopics();
+            publishCurrentPatternNumber();
         }
 
         if (mqttClient.connected()) {
