@@ -5,6 +5,10 @@ ENVS=ESP32_MAIN_GATE ESP32_CAFETERIA_GATE ESP32_CAFETERIA_TREE
 .PHONY: all
 all: $(ENVS)
 
+.PHONY: versioning
+versioning:
+	python versioning.py
+
 %:
 	$(PIO) run --environment $@
 	aws s3 cp .pio/build/$@/firmware.bin s3://$(AWS_S3_BUCKET)/$@/

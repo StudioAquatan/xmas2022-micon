@@ -10,6 +10,7 @@
 #include "aws_s3_ota.h"
 #include "secrets/aws.h"
 #include "secrets/wifi_configs.h"
+#include "version.h"
 #include "wifi_eap.h"
 
 unsigned long lastMillis = 0;
@@ -42,6 +43,7 @@ void setup() {
     setupWiFi();
     setupAWSIoT();
     publishCurrentPatternNumber();
+    publishReplyOTARequest(VERSION);
 
     xTaskCreatePinnedToCore(
         mqtt_main_loop,
@@ -73,6 +75,8 @@ void mqtt_main_loop(void *arg) {
 
         // WiFiの再接続を待って、MQTTを接続しにいく
         if (WiFi.status() == WL_CONNECTED && !mqttClient.connected()) {
+            // Serial.println("WiFi.status(): " + String(WiFi.status()));
+            // Serial.println("mqttClient.connected(): " + String(mqttClient.connected()));
             while (!mqttClient.connect(THINGNAME)) {
                 Serial.print(".");
                 delay(100);
