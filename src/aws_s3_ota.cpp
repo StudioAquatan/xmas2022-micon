@@ -165,4 +165,6 @@ void execOTA() {
         Serial.println("There was no content in the response");
         wifiClientOTA.flush();
     }
+    wifiClientOTA.flush();
+    ESP.restart();
 }
