@@ -165,7 +165,7 @@ void purplefly_pattern() {
 
         uint8_t colorIndex = paletteIndex;
         for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
-            leds[i] = ColorFromPalette(purplefly, colorIndex, BRIGHTNESS, LINEARBLEND);
+            leds[i] = ColorFromPalette(purplefly, colorIndex, 200, LINEARBLEND);
             colorIndex += 255 / TREE_LEDS;
             colorIndex++;
         }
@@ -204,7 +204,7 @@ void xmas_white_christmas() {
 
         uint8_t colorIndex = paletteIndex;
         for (uint16_t i = TREE_LED_BEGIN; i < TREE_LED_END; ++i) {
-            leds[i] = ColorFromPalette(white_christmas, colorIndex, BRIGHTNESS, LINEARBLEND);
+            leds[i] = ColorFromPalette(white_christmas, colorIndex, 200, LINEARBLEND);
             colorIndex += 255 / TREE_LEDS;
             colorIndex++;
         }
