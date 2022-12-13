@@ -1,8 +1,9 @@
 PIO=platformio
 AWS_S3_BUCKET=xmas2022-esp32-ota
+ENVS=ESP32_MAIN_GATE ESP32_CAFETERIA_GATE ESP32_CAFETERIA_TREE
 
 .PHONY: all
-all: ESP32Sample
+all: $(ENVS)
 
 %:
 	$(PIO) run --environment $@
