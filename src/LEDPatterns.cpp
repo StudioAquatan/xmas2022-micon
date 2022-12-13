@@ -257,7 +257,7 @@ LEDPatternList gSelectionPatterns = {
 };
 void selectionPatterns() {
     gSelectionPatterns[gCurrentSelectionPatternNumber]();
-    EVERY_N_SECONDS(10) {
+    EVERY_N_SECONDS(20) {
         for (int i = 0; i < 100; i++) {
             fadeToBlackBy(leds, NUM_LEDS, 10);
             FastLED.delay(10);
