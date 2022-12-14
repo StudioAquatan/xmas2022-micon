@@ -52,14 +52,14 @@ aws s3 cp .pio/build/<ENVIRONMENT>/firmware.bin s3://<BUCKET_NAME>/<THING_NAME>/
 - payload：
     ```json
     {
-        "state": "Request"
+        "url": "https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com/<BUCKET_NAME>/firmware.bin"
     }
     ```
 
 にpayloadをPublishする。
 
 ```bash
-aws iot-data publish --topic "<THING_NAME>/OTA/request" --cli-binary-format raw-in-base64-out --payload '{"state": "Request"}'
+aws iot-data publish --topic "<THING_NAME>/OTA/request" --cli-binary-format raw-in-base64-out --payload '{"url": "https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com/<BUCKET_NAME>/firmware.bin"}'
 ```
 
 3. IoTデバイスがリクエストを受け付けた場合、以下のメッセージを受け取る。
