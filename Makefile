@@ -9,7 +9,7 @@ all: $(ENVS)
 versioning:
 	python versioning.py
 
-%:
+$(ENVS):
 	$(PIO) run --environment $@
 	aws s3 cp .pio/build/$@/firmware.bin s3://$(AWS_S3_BUCKET)/$@/
 	aws iot-data publish --topic "$@/OTA/request" --cli-binary-format raw-in-base64-out --payload '{"state": "Request"}'
