@@ -13,3 +13,7 @@ $(ENVS):
 	$(PIO) run --environment $@
 	aws s3 cp .pio/build/$@/firmware.bin s3://$(AWS_S3_BUCKET)/$@/
 	aws iot-data publish --topic "$@/OTA/request" --cli-binary-format raw-in-base64-out --payload '{"state": "Request"}'
+
+.PHONY: s3-clean
+s3-clean:
+	aws s3 rm s3://$(AWS_S3_BUCKET)/ --recursive
