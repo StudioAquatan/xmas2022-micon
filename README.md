@@ -2,6 +2,13 @@
 
 企画部(irodori)と共同したクリスマス企画で、イルミネーションの点灯アニメーションを制御するマイコンプログラムのリポジトリ。
 
+関連レポジトリ
+
+- [xmas-api](https://github.com/StudioAquatan/xmas-api) Twitterの監視と点灯ルール配信
+- [xmas-frontend](https://github.com/StudioAquatan/xmas-frontend) ルール設定を行うためのフロントエンド
+- [xmas2022-micon](https://github.com/StudioAquatan/xmas2022-micon) イルミネーション点灯制御
+
+
 2021年版：[xmas2021-micon](https://github.com/StudioAquatan/xmas2021-micon)
 
 担当：@Hiroya-W
